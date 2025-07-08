@@ -54,8 +54,10 @@ $ node server.js
 ```
 
 ## Testing
+
 $ npm install
-```
+
+````
 
 ## Compile and run the project
 
@@ -68,7 +70,7 @@ $ npm run start:dev
 
 # production mode
 $ npm run start:prod
-```
+````
 
 ## Run tests
 
@@ -122,4 +124,5 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
 # jobloo-backend

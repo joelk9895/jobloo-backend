@@ -1,4 +1,12 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  MinLength,
+  IsEnum,
+  IsOptional,
+} from 'class-validator';
+import { UserType } from '../types/user-type.enum';
 
 export class SignUpDto {
   @IsEmail()
@@ -15,4 +23,23 @@ export class SignUpDto {
   @IsString()
   @IsNotEmpty()
   lastName: string;
+
+  @IsEnum(UserType)
+  userType: UserType;
+
+  @IsString()
+  @IsOptional()
+  companyName?: string;
+
+  @IsString()
+  @IsOptional()
+  companyWebsite?: string;
+
+  @IsString()
+  @IsOptional()
+  companySize?: string;
+
+  @IsString()
+  @IsOptional()
+  industry?: string;
 }

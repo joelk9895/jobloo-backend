@@ -12,7 +12,7 @@ const server = http.createServer((req, res) => {
         res.end(`Error loading index.html: ${err.message}`);
         return;
       }
-      
+
       res.writeHead(200, { 'Content-Type': 'text/html' });
       res.end(content);
     });
