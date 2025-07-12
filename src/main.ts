@@ -29,4 +29,9 @@ async function bootstrap() {
   console.log(`Server running on port ${port}`);
   await app.listen(port);
 }
+export async function createNestServer() {
+  const app = await NestFactory.create(AppModule);
+  return app;
+}
+
 void bootstrap();
