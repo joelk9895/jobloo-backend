@@ -1,38 +1,31 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
-import { HttpExceptionFilter } from './filters/http-exception.filter';
 import * as dotenv from 'dotenv';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 // Load environment variables from .env file
 dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  // Enable CORS with specific origin for development
   app.enableCors({
-    origin: ['http://localhost:8080'], // Array of allowed origins
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,Authorization',
+    origin: process.env.CORS_ORIGIN || '*', // Allow all origins by default, or specify a specific origin
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
   });
 
-  // Apply global exception filter
-  app.useGlobalFilters(new HttpExceptionFilter());
+  // Use DocumentBuilder to create the Swagger configuration
+  const config = new DocumentBuilder()
+    .setTitle('Jobloo API')
+    .setDescription('API documentation for Jobloo application')
+    .setVersion('1.0')
+    .addBearerAuth() // This is important for testing protected endpoints
+    .build();
 
-  // Enable validation
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true, // Strip properties that don't have decorators
-      transform: true, // Transform payloads to DTO instances
-      forbidNonWhitelisted: false, // Don't throw errors for non-whitelisted properties
-    }),
-  );
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
-  const port = process.env.PORT ?? 3002;
+  const port = process.env.PORT ?? 3000;
   console.log(`Server running on port ${port}`);
   await app.listen(port);
 }
